@@ -55,7 +55,13 @@ function App() {
       <div className="jobs-center">
         <div className="btn-container">
           {data.map((item) => {
-            return <button onClick={() => findById(item.id)} key={item.id} className="job-btn">{item.company}</button>
+            //button default class name
+            let clsName = 'job-btn';
+            //check if our item id equals to id of single shown item in state, then we adding active class to this button
+            if (item.id === singleItem.id) {
+              clsName += ' active-btn'
+            }
+            return <button onClick={() => findById(item.id)} key={item.id} className={clsName}>{item.company}</button>
           })}
         </div>
         <Info itemInfo={singleItem} />
