@@ -9,7 +9,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   //storing item which we clicked in tab button here
-  const [singleItem, setSingleItem] = useState([]);
+  const [singleItem, setSingleItem] = useState({});
 
   //fetch data
   const fetchData = async () => {
@@ -29,7 +29,8 @@ function App() {
   //find item by id of clicked tab
   const findById = (id) => {
     const item = data.filter(item => item.id === id);
-    // !!!important to set this item with spread operator, else it will be in array
+    // !!!important to set this item with spread operator, else it will be an array since we returning array from filter method
+    // so we need to spread it to return 1 object item
     setSingleItem(...item);
 
   }
