@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import { AiOutlineDoubleLeft } from 'react-icons/ai'
+
+import Info from './Info';
 //url to get data from
 const url = 'https://course-api.com/react-tabs-project'
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
+  //storing item which we clicked in tab button here
+  const [singleItem, setSingleItem] = useState([]);
 
   //fetch data
   const fetchData = async () => {
     const res = await fetch(url);
     const data = await res.json();
-
+    //set data, set single item, and set loading in false
     setData(data);
+    //set default item to show on load
+    setSingleItem(data[0])
     setLoading(false);
 
   }
@@ -21,7 +26,15 @@ function App() {
     fetchData()
   }, [])
 
-  console.log(data);
+  //find item by id of clicked tab
+  const findById = (id) => {
+    const item = data.filter(item => item.id === id);
+    // !!!important to set this item with spread operator, else it will be in array
+    setSingleItem(...item);
+
+  }
+
+
   //check if page is loading
   if (loading) {
     return (
@@ -31,7 +44,7 @@ function App() {
     )
   }
 
-
+  //destructure our singleItem for easier access
   return (
     <section className="section">
       <div className="title">
@@ -41,18 +54,10 @@ function App() {
       <div className="jobs-center">
         <div className="btn-container">
           {data.map((item) => {
-            return <button key={item.id} className="job-btn">{item.company}</button>
+            return <button onClick={() => findById(item.id)} key={item.id} className="job-btn">{item.company}</button>
           })}
         </div>
-        <article className="job-info">
-          <h3>dev</h3>
-          <h4>tommy</h4>
-          <p className="job-date">2015-2016</p>
-          <div className="job-desc">
-            <AiOutlineDoubleLeft />
-            <p>asdasdasdadadadadadasda</p>
-          </div>
-        </article>
+        <Info itemInfo={singleItem} />
       </div>
       <button type="button" className="btn">more info</button>
 
